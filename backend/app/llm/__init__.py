@@ -1,24 +1,50 @@
 """
-LLM integration layer — provider-independent AI interface.
+LLM Integration subsystem.
 
-This package implements the LLM abstraction layer:
+Abstracts LLM providers (OpenRouter, Ollama, Mock) behind a common interface
+and provides a resilient fallback chain with structured JSON parsing.
 
-- LLMProvider interface (ABC)
-- Provider implementations (OpenRouter, OpenAI-compatible, Ollama)
-- Fallback chain (automatic failover between providers)
-- Response caching (keyed by job_hash + task_type + resume_version)
-- Prompt templates for each task type
+Usage:
+    from app.llm import LLMFallbackChain, LLMRequest, AIJobMatchExplanation
 
-Supported LLM tasks:
-- Match explanation
-- Job summarization
-- Missing skills analysis
-- Cover letter generation
-- Recruiter message generation
-- Interview preparation
-- Company summary
-- Resume improvement suggestions
-
-The LLM layer NEVER receives raw PDF data.
-It always works with structured JSON representations.
+    chain = LLMFallbackChain([openrouter_provider, ollama_provider, mock_provider])
+    explanation, response = await chain.generate_structured(request, AIJobMatchExplanation)
 """
+
+from app.llm.base import LLMProvider
+from app.llm.chain import LLMFallbackChain, MockLLMProvider
+from app.llm.prompts import (
+    SYSTEM_PROMPT_COVER_LETTER,
+    SYSTEM_PROMPT_INTERVIEW_PREP,
+    SYSTEM_PROMPT_MATCH_EXPLAINER,
+    SYSTEM_PROMPT_RECRUITER_MESSAGE,
+    build_cover_letter_prompt,
+    build_match_explanation_prompt,
+    build_recruiter_message_prompt,
+)
+from app.llm.schemas import (
+    AIJobMatchExplanation,
+    LLMRequest,
+    LLMResponse,
+    LLMTaskType,
+)
+
+__all__ = [
+    # Base & Chain
+    "LLMProvider",
+    "LLMFallbackChain",
+    "MockLLMProvider",
+    # Schemas
+    "LLMTaskType",
+    "LLMRequest",
+    "LLMResponse",
+    "AIJobMatchExplanation",
+    # Prompts
+    "SYSTEM_PROMPT_MATCH_EXPLAINER",
+    "SYSTEM_PROMPT_COVER_LETTER",
+    "SYSTEM_PROMPT_RECRUITER_MESSAGE",
+    "SYSTEM_PROMPT_INTERVIEW_PREP",
+    "build_match_explanation_prompt",
+    "build_cover_letter_prompt",
+    "build_recruiter_message_prompt",
+]
