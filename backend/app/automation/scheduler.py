@@ -141,7 +141,7 @@ class SchedulerService:
                         keyword=title_keyword,
                         location=location,
                         last_page=1,
-                        total_found=total_scraped,
+                        total_results=total_scraped,
                     )
                 await session.commit()
 

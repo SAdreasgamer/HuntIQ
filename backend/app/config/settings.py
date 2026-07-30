@@ -150,7 +150,12 @@ class RedisSettings(BaseSettings):
 class ApifySettings(BaseSettings):
     """Apify API configuration."""
 
-    model_config = SettingsConfigDict(env_prefix="APIFY_")
+    model_config = SettingsConfigDict(
+        env_prefix="APIFY_",
+        env_file=str(ENV_FILE),
+        env_file_encoding="utf-8",
+        extra="ignore",
+    )
 
     token: SecretStr = Field(default=SecretStr(""), description="Apify API token")
     base_url: str = Field(
@@ -170,7 +175,12 @@ class ApifySettings(BaseSettings):
 class LLMSettings(BaseSettings):
     """LLM provider configuration."""
 
-    model_config = SettingsConfigDict(env_prefix="LLM_")
+    model_config = SettingsConfigDict(
+        env_prefix="LLM_",
+        env_file=str(ENV_FILE),
+        env_file_encoding="utf-8",
+        extra="ignore",
+    )
 
     provider: LLMProviderType = Field(
         default=LLMProviderType.OPENROUTER,
