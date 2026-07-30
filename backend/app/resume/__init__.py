@@ -2,13 +2,13 @@
 Resume processing pipeline.
 
 Parses PDF resumes into structured JSON models, manages versioning,
-and computes resume vector embeddings for matching.
+stores files, and computes resume vector embeddings for matching.
 
 Usage:
-    from app.resume import ResumeParser, ParsedResumeData
+    from app.resume import ResumeParser, ResumeStorageService
 
     parser = ResumeParser()
-    resume_data = parser.parse("path/to/resume.pdf")
+    storage = ResumeStorageService()
 """
 
 from app.resume.parser import ResumeParser
@@ -21,6 +21,7 @@ from app.resume.schemas import (
     SkillCategory,
     WorkExperience,
 )
+from app.resume.storage import ResumeStorageService
 
 __all__ = [
     "ResumeParser",
@@ -31,4 +32,5 @@ __all__ = [
     "Project",
     "Certification",
     "SkillCategory",
+    "ResumeStorageService",
 ]
