@@ -7,12 +7,13 @@ Calculates match scores between user resumes and job listings using:
 3. LLM quality gate & deep analysis
 
 Usage:
-    from app.matcher import RuleMatcher, JobEmbeddingService
+    from app.matcher import MatchingEngine, RuleMatcher, JobEmbeddingService
 
-    rule_matcher = RuleMatcher()
-    result = rule_matcher.evaluate(job, resume_data, user_pref)
+    engine = MatchingEngine()
+    result = await engine.match_job(session, job_id, resume_version_id, user_id)
 """
 
+from app.matcher.composite_matcher import CompositeMatchResult, MatchingEngine
 from app.matcher.job_embeddings import JobEmbeddingService
 from app.matcher.rule_matcher import RuleMatcher, RuleMatchResult
 
@@ -20,4 +21,6 @@ __all__ = [
     "JobEmbeddingService",
     "RuleMatcher",
     "RuleMatchResult",
+    "MatchingEngine",
+    "CompositeMatchResult",
 ]
