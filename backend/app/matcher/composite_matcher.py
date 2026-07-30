@@ -10,6 +10,7 @@ Persists final scores, sub-scores, missing skills, and matched resume references
 from __future__ import annotations
 
 from pydantic import BaseModel, Field
+from sqlalchemy import select, or_
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.config.settings import get_settings
@@ -201,10 +202,25 @@ class MatchingEngine:
             logger.warning("batch_match_aborted_no_active_resume", user_id=user_id)
             return []
 
-        unscored_jobs = await job_repo.get_unscored(limit=limit)
+        # Fetch active jobs to match
+        stmt = (
+            select(Job)
+            .where(
+                Job.is_active.is_(True),
+                Job.is_duplicate.is_(False),
+                or_(
+                    Job.match_score.is_(None),
+                    Job.matched_resume_id != resume_version.id,
+                ),
+            )
+            .order_by(Job.created_at.desc())
+            .limit(limit)
+        )
+        result = await session.execute(stmt)
+        target_jobs = result.scalars().all()
         results: list[CompositeMatchResult] = []
 
-        for job in unscored_jobs:
+        for job in target_jobs:
             try:
                 res = await self.match_job(
                     session=session,
