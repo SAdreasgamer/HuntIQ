@@ -9,10 +9,12 @@ from app.scrapers.providers.ashby import AshbyProvider
 from app.scrapers.providers.greenhouse import GreenhouseProvider
 from app.scrapers.providers.lever import LeverProvider
 from app.scrapers.providers.linkedin import LinkedInProvider
+from app.scrapers.providers.wellfound import WellfoundProvider
 
 __all__ = [
     "LinkedInProvider",
     "GreenhouseProvider",
     "LeverProvider",
     "AshbyProvider",
+    "WellfoundProvider",
 ]
