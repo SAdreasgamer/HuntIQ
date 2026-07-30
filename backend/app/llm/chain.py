@@ -41,7 +41,29 @@ class MockLLMProvider(LLMProvider):
   "tailoring_tips": ["Highlight AWS deployment experience in summary", "Add Kubernetes lab projects if available"]
 }"""
 
-        if "interview" in task_str or LLMTaskType.INTERVIEW_PREP in task_str:
+        if "company" in task_str or LLMTaskType.COMPANY_INTELLIGENCE in task_str:
+            content = """{
+  "company_name": "Target Company",
+  "industry": "Enterprise Software",
+  "estimated_engineering_size": "250-500",
+  "known_tech_stack": ["Python", "FastAPI", "Go", "PostgreSQL", "AWS"],
+  "engineering_culture_highlights": [
+    "Strong emphasis on automated CI/CD pipelines and unit test coverage",
+    "Blameless post-mortem culture with high engineering autonomy",
+    "Flexible remote-first hybrid work environment"
+  ],
+  "interview_process_summary": "4-stage pipeline: Recruiter screen (30m), Technical coding round (60m), System architecture interview (60m), and Culture fit with VP of Engineering (45m).",
+  "hiring_velocity_rating": "high",
+  "pros": ["High compensation competitive with Big Tech", "Modern tech stack", "Fast career progression"],
+  "cons": ["On-call rotation every 6 weeks", "Rapidly evolving roadmap requirements"],
+  "recommended_questions_to_ask_interviewer": [
+    "How does the engineering team balance technical debt resolution against feature delivery?",
+    "What are the key metrics used to evaluate success for a Senior Engineer in their first 90 days?",
+    "What does your deployment frequency look like across production microservices?"
+  ]
+}"""
+
+        elif "interview" in task_str or LLMTaskType.INTERVIEW_PREP in task_str:
             content = """{
   "job_title": "Target Role",
   "company_name": "Target Company",

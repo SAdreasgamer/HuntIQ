@@ -8,6 +8,10 @@ Generates AI job intelligence artifacts:
 - Company tech stack & culture intelligence
 """
 
+from app.intelligence.company import (
+    CompanyIntelligenceProfile,
+    CompanyIntelligenceService,
+)
 from app.intelligence.cover_letter import CoverLetterGeneratorService
 from app.intelligence.interview_prep import (
     InterviewPrepKit,
@@ -26,4 +30,6 @@ __all__ = [
     "InterviewPrepService",
     "InterviewPrepKit",
     "InterviewQuestion",
+    "CompanyIntelligenceService",
+    "CompanyIntelligenceProfile",
 ]
