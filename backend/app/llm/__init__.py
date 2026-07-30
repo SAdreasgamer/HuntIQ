@@ -2,27 +2,20 @@
 LLM Integration subsystem.
 
 Abstracts LLM providers (OpenRouter, Ollama, Mock) behind a common interface
-and provides a resilient fallback chain with aggressive response caching and structured JSON parsing.
+and provides a resilient fallback chain with aggressive response caching,
+structured JSON parsing, and AI Match Explanations.
 
 Usage:
-    from app.llm import LLMFallbackChain, LLMCacheService, AIJobMatchExplanation
+    from app.llm import LLMFallbackChain, LLMCacheService, MatchExplainerService
 
-    chain = LLMFallbackChain([OpenRouterLLMProvider(), OllamaLLMProvider(), MockLLMProvider()])
-    cache_service = LLMCacheService()
-
-    explanation, response, is_cached = await cache_service.execute_cached_structured(
-        session=session,
-        chain=chain,
-        request=request,
-        schema_cls=AIJobMatchExplanation,
-        content_hash=job.content_hash,
-        resume_version_id=resume.id,
-    )
+    explainer = MatchExplainerService()
+    explanation, is_cached = await explainer.explain_job_match(session, job_id, resume_id)
 """
 
 from app.llm.base import LLMProvider
 from app.llm.cache import LLMCacheService
 from app.llm.chain import LLMFallbackChain, MockLLMProvider
+from app.llm.explainer import MatchExplainerService
 from app.llm.prompts import (
     SYSTEM_PROMPT_COVER_LETTER,
     SYSTEM_PROMPT_INTERVIEW_PREP,
@@ -42,13 +35,14 @@ from app.llm.schemas import (
 )
 
 __all__ = [
-    # Base, Chain, Providers, Cache
+    # Base, Chain, Providers, Cache, Explainer
     "LLMProvider",
     "LLMFallbackChain",
     "MockLLMProvider",
     "OpenRouterLLMProvider",
     "OllamaLLMProvider",
     "LLMCacheService",
+    "MatchExplainerService",
     # Schemas
     "LLMTaskType",
     "LLMRequest",
