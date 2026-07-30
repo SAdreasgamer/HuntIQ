@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from datetime import datetime
 
-from sqlalchemy import DateTime, Integer, JSON, String, func
+from sqlalchemy import DateTime, Float, Integer, JSON, String, func
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.database.base import Base, UUIDPrimaryKeyMixin
@@ -72,7 +72,7 @@ class AnalyticsSnapshot(Base, UUIDPrimaryKeyMixin):
         doc="Jobs with match score > threshold",
     )
     average_match_score: Mapped[float | None] = mapped_column(
-        __import__("sqlalchemy").Float,
+        Float,
         nullable=True,
         default=None,
         doc="Average match score across all jobs",

@@ -7,7 +7,7 @@ for search preferences, blacklists, and notification settings.
 
 from __future__ import annotations
 
-from sqlalchemy import JSON, Boolean, Integer, String, Text
+from sqlalchemy import JSON, Boolean, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.base import Base, TimestampMixin, UUIDPrimaryKeyMixin
@@ -89,7 +89,7 @@ class UserPreference(Base, UUIDPrimaryKeyMixin, TimestampMixin):
 
     user_id: Mapped[str] = mapped_column(
         String(36),
-        __import__("sqlalchemy").ForeignKey("users.id", ondelete="CASCADE"),
+        ForeignKey("users.id", ondelete="CASCADE"),
         unique=True,
         nullable=False,
         index=True,

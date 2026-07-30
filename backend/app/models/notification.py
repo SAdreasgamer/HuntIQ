@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from datetime import datetime
 
-from sqlalchemy import Boolean, DateTime, ForeignKey, JSON, String, Text, func
+from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, JSON, String, Text, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.base import Base, UUIDPrimaryKeyMixin
@@ -92,7 +92,7 @@ class Notification(Base, UUIDPrimaryKeyMixin):
         doc="Error message if delivery failed",
     )
     retry_count: Mapped[int] = mapped_column(
-        __import__("sqlalchemy").Integer,
+        Integer,
         default=0,
         nullable=False,
         doc="Number of delivery retries",

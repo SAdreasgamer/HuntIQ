@@ -9,6 +9,7 @@ use the JSON, never re-parse the PDF.
 from __future__ import annotations
 
 from sqlalchemy import (
+    Float,
     Boolean,
     ForeignKey,
     Integer,
@@ -70,7 +71,7 @@ class ResumeVersion(Base, UUIDPrimaryKeyMixin, TimestampMixin):
         doc="Professional summary / objective text",
     )
     total_experience_years: Mapped[float | None] = mapped_column(
-        __import__("sqlalchemy").Float,
+        Float,
         nullable=True,
         default=None,
         doc="Total years of professional experience",
@@ -164,7 +165,7 @@ class ResumeSkill(Base, UUIDPrimaryKeyMixin):
         doc="Self-reported proficiency: beginner, intermediate, advanced, expert",
     )
     years_of_experience: Mapped[float | None] = mapped_column(
-        __import__("sqlalchemy").Float,
+        Float,
         nullable=True,
         default=None,
         doc="Years of experience with this skill",
