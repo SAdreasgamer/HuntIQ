@@ -60,7 +60,16 @@ class SchedulerService:
             Dictionary summary of pipeline run.
         """
         session_factory = get_session_factory()
-        providers_to_run = provider_names or ["linkedin"]
+        providers_to_run = provider_names or [
+            "linkedin",
+            "greenhouse",
+            "lever",
+            "ashby",
+            "indeed",
+            "naukri",
+            "wellfound",
+            "company_careers",
+        ]
         total_scraped = 0
         new_saved = 0
 
