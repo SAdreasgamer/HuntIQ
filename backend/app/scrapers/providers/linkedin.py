@@ -45,10 +45,6 @@ class LinkedInProvider(JobProvider):
                 query: dict[str, Any] = {
                     "keyword": keyword,
                     "location": location,
-                    "dateSincePosted": "past week",
-                    "jobType": "full-time",
-                    "experienceLevel": "entry level,associate,mid-senior level",
-                    "sortBy": "recent",
                 }
                 queries.append(query)
 
