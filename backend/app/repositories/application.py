@@ -11,6 +11,7 @@ from sqlalchemy import func, select
 from sqlalchemy.orm import selectinload
 
 from app.models.application import Application, ApplicationStageHistory, CoverLetter
+from app.models.job import Job
 from app.repositories.base import BaseRepository
 
 
@@ -44,7 +45,7 @@ class ApplicationRepository(BaseRepository[Application]):
         stmt = (
             select(Application)
             .where(Application.user_id == user_id)
-            .options(selectinload(Application.job))
+            .options(selectinload(Application.job).selectinload(Job.company))
         )
         if stage:
             stmt = stmt.where(Application.current_stage == stage)

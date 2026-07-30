@@ -11,6 +11,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from enum import Enum
 from typing import Any
+from collections.abc import Sequence
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -57,24 +58,7 @@ class ApplicationTrackerService:
         initial_stage: str = ApplicationStage.NOT_APPLIED.value,
         notes: str | None = None,
     ) -> Application:
-        """
-        Create a new job application record for tracking.
-
-        Args:
-            session: Async DB session.
-            user_id: User ID owner.
-            job_id: Target Job ID.
-            resume_version_id: Optional resume version used.
-            cover_letter: Optional cover letter text.
-            recruiter_name: Recruiter name.
-            recruiter_email: Recruiter email.
-            application_url: Application submission link.
-            initial_stage: Initial lifecycle stage.
-            notes: Optional initial notes.
-
-        Returns:
-            Created Application ORM model.
-        """
+        """Create a new job application record for tracking."""
         user_repo = UserRepository(session)
         job_repo = JobRepository(session)
         app_repo = ApplicationRepository(session)
@@ -142,21 +126,7 @@ class ApplicationTrackerService:
         offer_amount: str | None = None,
         rejection_reason: str | None = None,
     ) -> Application:
-        """
-        Transition an application to a new stage and record audit log.
-
-        Args:
-            session: Async DB session.
-            application_id: Primary key of Application.
-            new_stage: New target stage name.
-            notes: Optional notes regarding stage change.
-            next_interview_at: Scheduled interview timestamp.
-            offer_amount: Offer compensation string.
-            rejection_reason: Reason for rejection if applicable.
-
-        Returns:
-            Updated Application ORM model.
-        """
+        """Transition an application to a new stage and record audit log."""
         app_repo = ApplicationRepository(session)
         application = await app_repo.get_by_id(application_id)
         if not application:
@@ -173,7 +143,6 @@ class ApplicationTrackerService:
         old_stage = application.current_stage
         application.current_stage = target_stage
 
-        # Optional field updates
         if next_interview_at is not None:
             application.next_interview_at = next_interview_at
         if offer_amount is not None:
@@ -183,7 +152,6 @@ class ApplicationTrackerService:
         if target_stage == ApplicationStage.APPLIED.value and not application.applied_at:
             application.applied_at = datetime.now(timezone.utc)
 
-        # Record audit history
         history = ApplicationStageHistory(
             application_id=application_id,
             from_stage=old_stage,
@@ -202,17 +170,18 @@ class ApplicationTrackerService:
         )
         return application
 
+    async def get_user_applications(
+        self,
+        session: AsyncSession,
+        user_id: str,
+        stage: str | None = None,
+    ) -> Sequence[Application]:
+        """Get all applications for a user."""
+        app_repo = ApplicationRepository(session)
+        return await app_repo.get_by_user(user_id, stage=stage)
+
     async def get_funnel_metrics(self, session: AsyncSession, user_id: str) -> dict[str, Any]:
-        """
-        Calculate application funnel analytics metrics for user dashboard.
-
-        Args:
-            session: Async DB session.
-            user_id: User owner ID.
-
-        Returns:
-            Dictionary of metrics and stage counts.
-        """
+        """Calculate application funnel analytics metrics for user dashboard."""
         app_repo = ApplicationRepository(session)
         counts_raw = await app_repo.count_by_stage(user_id)
 
