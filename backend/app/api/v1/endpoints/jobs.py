@@ -40,6 +40,11 @@ async def list_jobs(
 
     items = []
     for j in jobs:
+        # Determine source platform from first JobSource if available
+        source_type = None
+        if j.sources:
+            source_type = j.sources[0].source_type
+
         items.append({
             "id": j.id,
             "title": j.title,
@@ -48,10 +53,16 @@ async def list_jobs(
             "is_remote": j.is_remote,
             "salary_min": j.salary_min,
             "salary_max": j.salary_max,
+            "salary_currency": j.salary_currency,
+            "seniority_level": j.seniority_level,
+            "employment_type": j.employment_type,
             "match_score": j.match_score,
             "rule_score": j.rule_score,
             "embedding_score": j.embedding_score,
             "posting_url": j.posting_url,
+            "apply_url": j.apply_url,
+            "source_type": source_type,
+            "description": (j.description[:300] + "...") if j.description and len(j.description) > 300 else j.description,
             "created_at": j.created_at.isoformat() if j.created_at else None,
         })
 

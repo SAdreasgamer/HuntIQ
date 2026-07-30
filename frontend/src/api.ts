@@ -6,10 +6,16 @@ export interface Job {
   is_remote: boolean
   salary_min?: number
   salary_max?: number
+  salary_currency?: string
+  seniority_level?: string
+  employment_type?: string
   match_score?: number
   rule_score?: number
   embedding_score?: number
   posting_url?: string
+  apply_url?: string
+  source_type?: string
+  description?: string
   created_at?: string
 }
 
@@ -80,7 +86,7 @@ export async function triggerScrape(keyword: string = 'Software Engineer'): Prom
   const res = await fetch(`${API_BASE}/scrapers/trigger`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ title_keyword: keyword, location: 'Remote' }),
+    body: JSON.stringify({ title_keyword: keyword, location: 'India' }),
   })
   if (!res.ok) throw new Error('Scrape trigger failed')
   return res.json()

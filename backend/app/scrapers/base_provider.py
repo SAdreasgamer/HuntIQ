@@ -256,14 +256,18 @@ class JobProvider(ABC):
             "python", "java", "javascript", "typescript", "go", "golang", "rust",
             "c++", "c#", "ruby", "php", "swift", "kotlin", "scala", "r",
             "react", "angular", "vue", "next.js", "node.js", "express",
-            "django", "flask", "fastapi", "spring", "spring boot",
+            "django", "flask", "fastapi", "spring", "spring boot", "spring mvc",
+            "spring data jpa", "spring security", "hibernate",
             "aws", "azure", "gcp", "google cloud", "docker", "kubernetes", "k8s",
             "terraform", "ansible", "jenkins", "github actions", "ci/cd",
+            "nginx", "ecs", "fargate", "ec2", "s3", "cloudfront",
             "postgresql", "mysql", "mongodb", "redis", "elasticsearch",
-            "kafka", "rabbitmq", "graphql", "rest", "grpc",
+            "kafka", "rabbitmq", "graphql", "rest", "grpc", "protobuf",
             "microservices", "distributed systems", "machine learning", "deep learning",
             "pytorch", "tensorflow", "pandas", "numpy", "spark",
             "sql", "nosql", "linux", "git", "agile", "scrum",
+            "langchain", "langgraph", "eureka", "api gateway",
+            "websockets", "webrtc", "ffmpeg", "hls", "minio",
         }
 
         text_lower = text.lower()

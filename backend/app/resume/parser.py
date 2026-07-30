@@ -43,21 +43,28 @@ class ResumeParser:
             "c++", "c#", "c", "ruby", "php", "swift", "kotlin", "scala", "sql", "r", "html", "css",
         },
         "Frameworks & Libraries": {
-            "spring", "spring boot", "django", "fastapi", "flask", "react", "next.js",
+            "spring", "spring boot", "spring mvc", "spring data jpa", "spring security",
+            "django", "fastapi", "flask", "react", "next.js",
             "angular", "vue", "node.js", "express", "pytorch", "tensorflow", "pandas",
             "numpy", "scikit-learn", "spark", "hibernate", "gin",
+            "langchain", "langgraph",
         },
         "Databases & Storage": {
             "postgresql", "mysql", "mongodb", "redis", "elasticsearch", "sqlite",
             "dynamodb", "cassandra", "neo4j", "mariadb", "oracle", "snowflake",
+            "minio",
         },
         "Cloud & DevOps": {
             "aws", "azure", "gcp", "docker", "kubernetes", "k8s", "terraform",
             "ansible", "jenkins", "github actions", "ci/cd", "helm", "prometheus", "grafana",
+            "nginx", "ecs", "fargate", "ec2", "s3", "cloudfront",
         },
         "Architecture & Systems": {
-            "microservices", "distributed systems", "rest", "graphql", "grpc",
+            "microservices", "distributed systems", "rest", "restful apis", "graphql", "grpc",
             "kafka", "rabbitmq", "system design", "oop", "agile", "scrum", "git",
+            "eureka", "api gateway", "service discovery",
+            "websockets", "webrtc", "protobuf",
+            "ffmpeg", "hls",
         },
     }
 

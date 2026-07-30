@@ -65,12 +65,24 @@ async def upload_resume(
 
     await session.commit()
 
+    # 5. Auto-match all existing jobs against the new resume
+    matched_count = 0
+    try:
+        from app.matcher.composite_matcher import MatchingEngine
+        matching_engine = MatchingEngine()
+        matched_results = await matching_engine.batch_match_unscored_jobs(session, user.id, limit=200)
+        matched_count = len(matched_results)
+        await session.commit()
+    except Exception:
+        pass  # Matching is best-effort; upload should still succeed
+
     return {
         "id": version.id,
         "filename": version.name,
         "file_hash": version.file_hash,
         "is_primary": version.is_primary,
         "skills_found": parsed_data.skills[:10],
+        "jobs_matched": matched_count,
         "created_at": version.created_at.isoformat() if version.created_at else None,
     }
 

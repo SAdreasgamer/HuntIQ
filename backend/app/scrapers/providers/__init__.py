@@ -5,6 +5,7 @@ All provider modules defined in this package self-register
 via the @register_provider decorator upon import.
 """
 
+from app.scrapers.providers.all_jobs_provider import AllJobsProvider
 from app.scrapers.providers.ashby import AshbyProvider
 from app.scrapers.providers.company_careers import CompanyCareersProvider
 from app.scrapers.providers.greenhouse import GreenhouseProvider
@@ -15,6 +16,7 @@ from app.scrapers.providers.naukri import NaukriProvider
 from app.scrapers.providers.wellfound import WellfoundProvider
 
 __all__ = [
+    "AllJobsProvider",
     "LinkedInProvider",
     "GreenhouseProvider",
     "LeverProvider",
