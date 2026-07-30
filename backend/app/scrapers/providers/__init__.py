@@ -7,6 +7,7 @@ via the @register_provider decorator upon import.
 
 from app.scrapers.providers.ashby import AshbyProvider
 from app.scrapers.providers.greenhouse import GreenhouseProvider
+from app.scrapers.providers.indeed import IndeedProvider
 from app.scrapers.providers.lever import LeverProvider
 from app.scrapers.providers.linkedin import LinkedInProvider
 from app.scrapers.providers.wellfound import WellfoundProvider
@@ -17,4 +18,5 @@ __all__ = [
     "LeverProvider",
     "AshbyProvider",
     "WellfoundProvider",
+    "IndeedProvider",
 ]
