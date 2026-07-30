@@ -15,7 +15,7 @@ from pydantic import BaseModel
 from app.core.exceptions import LLMError
 from app.core.logging import get_logger
 from app.llm.base import LLMProvider
-from app.llm.schemas import LLMRequest, LLMResponse
+from app.llm.schemas import LLMRequest, LLMResponse, LLMTaskType
 
 logger = get_logger(__name__)
 
@@ -30,6 +30,7 @@ class MockLLMProvider(LLMProvider):
 
     async def generate(self, request: LLMRequest) -> LLMResponse:
         """Return structured mock responses based on task type."""
+        task_str = str(request.task_type).lower()
         logger.info("mock_llm_generating", task_type=request.task_type)
 
         content = """{
@@ -40,8 +41,46 @@ class MockLLMProvider(LLMProvider):
   "tailoring_tips": ["Highlight AWS deployment experience in summary", "Add Kubernetes lab projects if available"]
 }"""
 
-        if "cover letter" in request.prompt.lower():
-            content = f"Dear Hiring Team,\n\nI am writing to express my strong interest in the role. With my background in backend engineering and cloud architecture, I am confident in my ability to add immediate value to your team.\n\nSincerely,\nCandidate"
+        if "interview" in task_str or LLMTaskType.INTERVIEW_PREP in task_str:
+            content = """{
+  "job_title": "Target Role",
+  "company_name": "Target Company",
+  "technical_questions": [
+    {
+      "question": "How do you handle distributed transactions and lock contention across microservices?",
+      "category": "technical",
+      "difficulty": "hard",
+      "key_points_to_mention": ["Two-phase commit", "Saga pattern", "Eventual consistency"],
+      "sample_star_answer": "In my previous system, I implemented the Saga pattern using Kafka event streams to guarantee eventual consistency..."
+    }
+  ],
+  "behavioral_questions": [
+    {
+      "question": "Describe a situation where you resolved a critical production incident under high pressure.",
+      "category": "behavioral",
+      "difficulty": "medium",
+      "key_points_to_mention": ["Root cause analysis", "Post-mortem documentation", "Blameless culture"],
+      "sample_star_answer": "When database connection pools were exhausted during peak traffic..."
+    }
+  ],
+  "system_design_questions": [
+    {
+      "question": "Design a globally distributed rate limiter capable of handling 1M RPS with sub-10ms latency.",
+      "category": "system_design",
+      "difficulty": "hard",
+      "key_points_to_mention": ["Token bucket algorithm", "Redis cluster caching", "Slide window counters"],
+      "sample_star_answer": "I would architecture a multi-region Redis cluster using local memory sliding windows..."
+    }
+  ],
+  "top_preparation_tips": [
+    "Review core concurrency primitives and memory layout",
+    "Prepare 3 STAR stories highlighting high scale architecture",
+    "Familiarize yourself with target company's open source stack"
+  ]
+}"""
+
+        elif "cover" in request.prompt.lower() or "cover_letter" in task_str:
+            content = "Dear Hiring Team,\n\nI am writing to express my strong interest in the role. With my background in backend engineering and cloud architecture, I am confident in my ability to add immediate value to your team.\n\nSincerely,\nCandidate"
 
         return LLMResponse(
             content=content,
