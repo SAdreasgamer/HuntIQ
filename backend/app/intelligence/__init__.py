@@ -9,7 +9,13 @@ Generates AI job intelligence artifacts:
 """
 
 from app.intelligence.cover_letter import CoverLetterGeneratorService
+from app.intelligence.recruiter_message import (
+    RecruiterMessageGeneratorService,
+    RecruiterOutreachMessage,
+)
 
 __all__ = [
     "CoverLetterGeneratorService",
+    "RecruiterMessageGeneratorService",
+    "RecruiterOutreachMessage",
 ]
