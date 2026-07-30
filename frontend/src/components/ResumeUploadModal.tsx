@@ -63,22 +63,22 @@ export const ResumeUploadModal: React.FC<ResumeUploadModalProps> = ({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
-      <div className="pro-card max-w-md w-full overflow-hidden shadow-xl border border-slate-700">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs">
+      <div className="bg-white max-w-md w-full rounded-xl overflow-hidden shadow-2xl border border-slate-200">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-slate-800 bg-slate-900">
+        <div className="flex items-center justify-between p-4 border-b border-slate-200 bg-slate-50">
           <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded bg-slate-800 text-blue-400 border border-slate-700">
+            <div className="p-2 rounded bg-blue-50 text-blue-600 border border-blue-100">
               <FileText className="h-4 w-4" />
             </div>
             <div>
-              <h3 className="text-base font-bold text-slate-100">Upload Candidate Resume</h3>
-              <p className="text-[11px] text-slate-400">PDF resume parsing & vector embedding</p>
+              <h3 className="text-base font-bold text-slate-900">Upload Candidate Resume</h3>
+              <p className="text-[11px] text-slate-500">PDF resume parsing & vector embedding</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-colors"
+            className="p-1 rounded text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition-colors"
           >
             <X className="h-4 w-4" />
           </button>
@@ -89,9 +89,9 @@ export const ResumeUploadModal: React.FC<ResumeUploadModalProps> = ({
           {!result ? (
             <>
               {/* Dropzone Area */}
-              <label className="flex flex-col items-center justify-center p-6 border border-dashed border-slate-700 hover:border-blue-500 rounded-lg cursor-pointer bg-slate-900/60 hover:bg-slate-900 transition-colors">
+              <label className="flex flex-col items-center justify-center p-6 border border-dashed border-slate-300 hover:border-blue-500 rounded-lg cursor-pointer bg-slate-50 hover:bg-slate-100/60 transition-colors">
                 <UploadCloud className="h-8 w-8 text-slate-400 mb-2" />
-                <span className="text-xs font-semibold text-slate-200">
+                <span className="text-xs font-semibold text-slate-700">
                   {file ? file.name : 'Click to upload or drag & drop PDF'}
                 </span>
                 <span className="text-[11px] text-slate-500 mt-1">PDF format (Max 10MB)</span>
@@ -99,7 +99,7 @@ export const ResumeUploadModal: React.FC<ResumeUploadModalProps> = ({
               </label>
 
               {error && (
-                <div className="flex items-center gap-2 p-2.5 rounded bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs">
+                <div className="flex items-center gap-2 p-2.5 rounded bg-rose-50 border border-rose-200 text-rose-700 text-xs">
                   <AlertCircle className="h-4 w-4 shrink-0" />
                   {error}
                 </div>
@@ -108,7 +108,7 @@ export const ResumeUploadModal: React.FC<ResumeUploadModalProps> = ({
               <button
                 onClick={handleUpload}
                 disabled={!file || uploading}
-                className="w-full py-2 rounded bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                className="w-full py-2 rounded bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs transition-colors shadow-xs disabled:opacity-50 flex items-center justify-center gap-2"
               >
                 {uploading ? (
                   <>
@@ -122,16 +122,16 @@ export const ResumeUploadModal: React.FC<ResumeUploadModalProps> = ({
             </>
           ) : (
             <div className="text-center py-5 space-y-3">
-              <CheckCircle2 className="h-10 w-10 text-emerald-400 mx-auto" />
+              <CheckCircle2 className="h-10 w-10 text-emerald-600 mx-auto" />
               <div>
-                <h4 className="text-base font-bold text-slate-100">Resume Uploaded Successfully</h4>
-                <p className="text-xs text-slate-400 mt-1">
-                  Parsed <span className="text-blue-400 font-semibold">{result.skills_found?.length || 0} skills</span> & updated 384-dim embedding.
+                <h4 className="text-base font-bold text-slate-900">Resume Uploaded Successfully</h4>
+                <p className="text-xs text-slate-500 mt-1">
+                  Parsed <span className="text-blue-600 font-semibold">{result.skills_found?.length || 0} skills</span> & updated 384-dim embedding.
                 </p>
               </div>
               <button
                 onClick={onClose}
-                className="px-5 py-1.5 rounded bg-blue-600 text-white font-semibold text-xs hover:bg-blue-500 transition-colors"
+                className="px-5 py-1.5 rounded bg-blue-600 text-white font-semibold text-xs hover:bg-blue-700 transition-colors shadow-xs"
               >
                 Done
               </button>

@@ -3,16 +3,17 @@
 @layer base {
   body {
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    background-color: #090d16;
-    color: #f1f5f9;
+    background-color: #f8fafc;
+    color: #0f172a;
   }
 }
 
-/* Minimal Clean Card */
+/* Professional Light Card */
 .pro-card {
-  background: #0f172a;
-  border: 1px solid #1e293b;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
   border-radius: 12px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
 }
 
 .pro-card-hover {
@@ -20,25 +21,25 @@
 }
 
 .pro-card-hover:hover {
-  border-color: #3b82f6;
-  box-shadow: 0 4px 20px -2px rgba(59, 130, 246, 0.1);
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.08);
 }
 
-/* Clean Custom Scrollbar */
+/* Custom Scrollbar for Light Theme */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #090d16;
+  background: #f1f5f9;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #334155;
+  background: #cbd5e1;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #475569;
+  background: #94a3b8;
 }

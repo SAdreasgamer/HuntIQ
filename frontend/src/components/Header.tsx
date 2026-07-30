@@ -1,5 +1,5 @@
 import React from 'react'
-import { Download, Play, Briefcase, BarChart3, Layers, FileUp, ShieldCheck } from 'lucide-react'
+import { Download, Play, Briefcase, BarChart3, Layers, FileUp } from 'lucide-react'
 
 interface HeaderProps {
   activeTab: 'feed' | 'kanban' | 'analytics'
@@ -21,32 +21,32 @@ export const Header: React.FC<HeaderProps> = ({
   }
 
   return (
-    <header className="bg-slate-900 border-b border-slate-800 px-6 py-3.5 sticky top-0 z-40">
+    <header className="bg-white border-b border-slate-200 px-6 py-3.5 sticky top-0 z-40 shadow-xs">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-        {/* Clean Professional Brand */}
+        {/* Brand */}
         <div className="flex items-center gap-3">
-          <div className="h-9 w-9 rounded-lg bg-blue-600 flex items-center justify-center text-white shadow-sm font-bold text-lg">
+          <div className="h-9 w-9 rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold text-base shadow-xs">
             H
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-lg font-bold text-slate-100 tracking-tight">HuntIQ</h1>
-              <span className="text-[10px] font-semibold tracking-wide uppercase px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">
+              <h1 className="text-lg font-bold text-slate-900 tracking-tight">HuntIQ</h1>
+              <span className="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200">
                 Enterprise
               </span>
             </div>
-            <p className="text-xs text-slate-400">Autonomous Career Intelligence Platform</p>
+            <p className="text-xs text-slate-500">Autonomous Career Intelligence Platform</p>
           </div>
         </div>
 
-        {/* Minimal Navigation Tabs */}
-        <nav className="flex items-center gap-1 bg-slate-950 p-1 rounded-lg border border-slate-800">
+        {/* Navigation Tabs */}
+        <nav className="flex items-center gap-1 bg-slate-100 p-1 rounded-lg border border-slate-200">
           <button
             onClick={() => setActiveTab('feed')}
-            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-md text-xs font-semibold transition-colors ${
+            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-md text-xs font-semibold transition-all ${
               activeTab === 'feed'
-                ? 'bg-blue-600 text-white'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
+                ? 'bg-white text-blue-600 shadow-xs'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
             }`}
           >
             <Briefcase className="h-3.5 w-3.5" />
@@ -55,10 +55,10 @@ export const Header: React.FC<HeaderProps> = ({
 
           <button
             onClick={() => setActiveTab('kanban')}
-            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-md text-xs font-semibold transition-colors ${
+            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-md text-xs font-semibold transition-all ${
               activeTab === 'kanban'
-                ? 'bg-blue-600 text-white'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
+                ? 'bg-white text-blue-600 shadow-xs'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
             }`}
           >
             <Layers className="h-3.5 w-3.5" />
@@ -67,10 +67,10 @@ export const Header: React.FC<HeaderProps> = ({
 
           <button
             onClick={() => setActiveTab('analytics')}
-            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-md text-xs font-semibold transition-colors ${
+            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-md text-xs font-semibold transition-all ${
               activeTab === 'analytics'
-                ? 'bg-blue-600 text-white'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
+                ? 'bg-white text-blue-600 shadow-xs'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
             }`}
           >
             <BarChart3 className="h-3.5 w-3.5" />
@@ -82,16 +82,16 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="flex items-center gap-2.5">
           <button
             onClick={onOpenUploadResume}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs font-semibold transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 text-xs font-semibold shadow-xs transition-colors"
           >
-            <FileUp className="h-3.5 w-3.5 text-blue-400" />
+            <FileUp className="h-3.5 w-3.5 text-blue-600" />
             Upload Resume
           </button>
 
           <button
             onClick={onTriggerScrape}
             disabled={isScraping}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold transition-colors disabled:opacity-50"
+            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-md bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold shadow-xs transition-colors disabled:opacity-50"
           >
             <Play className={`h-3.5 w-3.5 ${isScraping ? 'animate-spin' : ''}`} />
             {isScraping ? 'Scraping...' : 'Run Scrapers'}
@@ -99,10 +99,10 @@ export const Header: React.FC<HeaderProps> = ({
 
           <button
             onClick={handleExportExcel}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs font-semibold transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 text-xs font-semibold shadow-xs transition-colors"
             title="Download Excel Report"
           >
-            <Download className="h-3.5 w-3.5 text-emerald-400" />
+            <Download className="h-3.5 w-3.5 text-emerald-600" />
             Export Excel
           </button>
         </div>
