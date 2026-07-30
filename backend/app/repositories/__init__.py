@@ -6,7 +6,7 @@ Business logic in services should NEVER construct raw
 SQLAlchemy queries — always use repository methods.
 
 Usage:
-    from app.repositories import JobRepository
+    from app.repositories import JobRepository, CoverLetterRepository
 
     async def get_top_jobs(session: AsyncSession):
         repo = JobRepository(session)
@@ -17,6 +17,7 @@ from app.repositories.analytics import AnalyticsSnapshotRepository
 from app.repositories.application import (
     ApplicationRepository,
     ApplicationStageHistoryRepository,
+    CoverLetterRepository,
 )
 from app.repositories.base import BaseRepository
 from app.repositories.bookmark import BookmarkRepository, BookmarkTagRepository
@@ -60,19 +61,20 @@ __all__ = [
     # Application
     "ApplicationRepository",
     "ApplicationStageHistoryRepository",
+    "CoverLetterRepository",
     # Bookmark
     "BookmarkRepository",
     "BookmarkTagRepository",
     # Recruiter
     "RecruiterRepository",
+    # Search
+    "SearchCheckpointRepository",
+    # LLM Cache
+    "LLMCacheRepository",
     # Notification
     "NotificationRepository",
     # Report
     "ReportRepository",
     # Analytics
     "AnalyticsSnapshotRepository",
-    # LLM Cache
-    "LLMCacheRepository",
-    # Search
-    "SearchCheckpointRepository",
 ]

@@ -1,5 +1,5 @@
 """
-Application and ApplicationStageHistory repositories.
+Application, ApplicationStageHistory, and CoverLetter repositories.
 """
 
 from __future__ import annotations
@@ -10,7 +10,7 @@ from datetime import datetime, timezone
 from sqlalchemy import func, select
 from sqlalchemy.orm import selectinload
 
-from app.models.application import Application, ApplicationStageHistory
+from app.models.application import Application, ApplicationStageHistory, CoverLetter
 from app.repositories.base import BaseRepository
 
 
@@ -98,20 +98,18 @@ class ApplicationRepository(BaseRepository[Application]):
     async def get_upcoming_interviews(
         self,
         user_id: str,
-        limit: int = 10,
     ) -> Sequence[Application]:
-        """Get applications with upcoming interviews."""
+        """Get applications with an upcoming scheduled interview."""
         now = datetime.now(timezone.utc)
         stmt = (
             select(Application)
             .where(
                 Application.user_id == user_id,
-                Application.next_interview_at.isnot(None),
+                Application.next_interview_at.is_not(None),
                 Application.next_interview_at >= now,
             )
             .options(selectinload(Application.job))
             .order_by(Application.next_interview_at.asc())
-            .limit(limit)
         )
         result = await self.session.execute(stmt)
         return result.scalars().all()
@@ -122,15 +120,21 @@ class ApplicationStageHistoryRepository(BaseRepository[ApplicationStageHistory])
 
     model = ApplicationStageHistory
 
-    async def get_by_application_id(
-        self,
-        application_id: str,
-    ) -> Sequence[ApplicationStageHistory]:
-        """Get the full stage transition history for an application."""
+
+class CoverLetterRepository(BaseRepository[CoverLetter]):
+    """Repository for CoverLetter model operations."""
+
+    model = CoverLetter
+
+    async def get_by_user_and_job(self, user_id: str, job_id: str) -> Sequence[CoverLetter]:
+        """Get cover letters generated for a specific job."""
         stmt = (
-            select(ApplicationStageHistory)
-            .where(ApplicationStageHistory.application_id == application_id)
-            .order_by(ApplicationStageHistory.transitioned_at.asc())
+            select(CoverLetter)
+            .where(
+                CoverLetter.user_id == user_id,
+                CoverLetter.job_id == job_id,
+            )
+            .order_by(CoverLetter.created_at.desc())
         )
         result = await self.session.execute(stmt)
         return result.scalars().all()

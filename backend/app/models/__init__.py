@@ -6,12 +6,12 @@ with the Base metadata. This is required for Alembic
 autogenerate to detect all tables.
 
 Usage:
-    from app.models import User, Job, Company, Application, ...
+    from app.models import User, Job, Company, Application, CoverLetter, ...
 """
 
 # Import all models so they register with Base.metadata
 from app.models.analytics import AnalyticsSnapshot
-from app.models.application import Application, ApplicationStageHistory
+from app.models.application import Application, ApplicationStageHistory, CoverLetter
 from app.models.bookmark import Bookmark, BookmarkTag
 from app.models.company import Company
 from app.models.job import Job, JobEmbedding, JobSkill, JobSource
@@ -42,6 +42,7 @@ __all__ = [
     # Application
     "Application",
     "ApplicationStageHistory",
+    "CoverLetter",
     # Bookmark
     "Bookmark",
     "BookmarkTag",

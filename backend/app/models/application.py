@@ -1,16 +1,16 @@
 """
-Application and ApplicationStageHistory ORM models.
+Application, ApplicationStageHistory, and CoverLetter ORM models.
 
 Tracks the full lifecycle of job applications from
 'Not Applied' through to 'Offer' or 'Rejected',
-with a complete stage transition history.
+with a complete stage transition history and generated cover letters.
 """
 
 from __future__ import annotations
 
 from datetime import datetime
 
-from sqlalchemy import DateTime, ForeignKey, String, Text, func
+from sqlalchemy import DateTime, ForeignKey, Integer, String, Text, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.base import Base, NotesMixin, TimestampMixin, UUIDPrimaryKeyMixin
@@ -165,6 +165,57 @@ class ApplicationStageHistory(Base, UUIDPrimaryKeyMixin):
     application: Mapped[Application] = relationship(
         "Application",
         back_populates="stage_history",
+    )
+
+
+class CoverLetter(Base, UUIDPrimaryKeyMixin, TimestampMixin):
+    """Stores generated cover letters."""
+
+    __tablename__ = "cover_letters"
+
+    user_id: Mapped[str] = mapped_column(
+        String(36),
+        ForeignKey("users.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
+        doc="FK to user",
+    )
+    job_id: Mapped[str] = mapped_column(
+        String(36),
+        ForeignKey("jobs.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
+        doc="FK to job",
+    )
+    resume_version_id: Mapped[str | None] = mapped_column(
+        String(36),
+        ForeignKey("resume_versions.id", ondelete="SET NULL"),
+        nullable=True,
+        default=None,
+        doc="FK to resume version used",
+    )
+    tone: Mapped[str] = mapped_column(
+        String(50),
+        nullable=False,
+        default="professional",
+        doc="Tone used (professional, technical, executive)",
+    )
+    content: Mapped[str] = mapped_column(
+        Text,
+        nullable=False,
+        doc="Full text of the cover letter",
+    )
+    format: Mapped[str] = mapped_column(
+        String(20),
+        nullable=False,
+        default="markdown",
+        doc="Format (markdown, txt)",
+    )
+    word_count: Mapped[int] = mapped_column(
+        Integer,
+        nullable=False,
+        default=0,
+        doc="Word count of generated letter",
     )
 
 
