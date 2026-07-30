@@ -3,25 +3,6 @@ HuntIQ — Custom Exception Hierarchy.
 
 All application-specific exceptions are defined here.
 The hierarchy enables granular error handling at every layer.
-
-Base: HuntIQError
-├── ConfigurationError
-├── DatabaseError
-├── ProviderError
-│   ├── ProviderTimeoutError
-│   ├── ProviderRateLimitError
-│   └── ProviderUnavailableError
-├── MatchingError
-├── ResumeParsingError
-├── LLMError
-│   ├── LLMTimeoutError
-│   ├── LLMRateLimitError
-│   └── LLMUnavailableError
-├── NotificationError
-├── ReportError
-├── AuthenticationError
-├── AuthorizationError
-└── ValidationError
 """
 
 from __future__ import annotations
@@ -49,7 +30,7 @@ class ConfigurationError(HuntIQError):
 
 
 # ============================================================
-# Database Errors
+# Database & Domain Errors
 # ============================================================
 
 
@@ -77,6 +58,16 @@ class DuplicateRecordError(DatabaseError):
         )
 
 
+class InvalidStateTransitionError(HuntIQError):
+    """Raised when an illegal or invalid state transition is requested."""
+
+    def __init__(self, from_state: str, to_state: str, reason: str | None = None) -> None:
+        msg = f"Cannot transition state from '{from_state}' to '{to_state}'"
+        if reason:
+            msg += f": {reason}"
+        super().__init__(message=msg, details={"from_state": from_state, "to_state": to_state})
+
+
 # ============================================================
 # Provider Errors (Job Scrapers)
 # ============================================================
@@ -100,36 +91,29 @@ class ProviderTimeoutError(ProviderError):
 class ProviderRateLimitError(ProviderError):
     """Raised when a provider rate limit is exceeded."""
 
-    def __init__(self, provider: str, retry_after: int | None = None) -> None:
-        self.retry_after = retry_after
-        super().__init__(
-            provider=provider,
-            message=f"Rate limit exceeded. Retry after {retry_after}s"
-            if retry_after
-            else "Rate limit exceeded",
-            details={"retry_after": retry_after},
-        )
-
 
 class ProviderUnavailableError(ProviderError):
-    """Raised when a provider is temporarily unavailable."""
+    """Raised when a provider service is unavailable."""
 
 
-class ProviderAuthenticationError(ProviderError):
-    """Raised when provider authentication fails (bad API key, etc)."""
+class ProviderAuthError(ProviderError):
+    """Raised when provider authentication fails."""
+
+
+ProviderAuthenticationError = ProviderAuthError
 
 
 # ============================================================
-# Matching Errors
+# Matching & Scoring Errors
 # ============================================================
 
 
 class MatchingError(HuntIQError):
-    """Raised when the matching engine encounters an error."""
+    """Base exception for matching engine errors."""
 
 
-class EmbeddingError(MatchingError):
-    """Raised when embedding generation or comparison fails."""
+class WeightsValidationError(MatchingError):
+    """Raised when rule matcher weights do not sum to 1.0."""
 
 
 # ============================================================
@@ -250,12 +234,3 @@ class AuthorizationError(HuntIQError):
             message=f"Not authorized to {action} on {resource}",
             details={"action": action, "resource": resource},
         )
-
-
-# ============================================================
-# Validation Errors
-# ============================================================
-
-
-class AppValidationError(HuntIQError):
-    """Raised when business-level validation fails (not Pydantic)."""
