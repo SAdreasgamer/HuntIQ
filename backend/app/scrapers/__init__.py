@@ -1,19 +1,20 @@
 """
-Job scraper layer — provider implementations.
+Job scraping subsystem.
 
-This package contains the job provider plugin system:
+This package contains the Apify HTTP client, provider
+abstraction, and all job source provider implementations.
 
-- Base provider interface (JobProvider ABC)
-- Provider registry (dynamic discovery and instantiation)
-- Apify client (HTTP gateway to Apify API)
-- Individual provider implementations
+Usage:
+    from app.scrapers.apify_client import ApifyClient
 
-Each provider implements the JobProvider interface:
-- search_jobs(): Execute search against the job source
-- normalize_job(): Convert raw data to structured Job schema
-- validate(): Validate provider configuration
-- health_check(): Check provider availability
-
-Adding a new provider requires only creating a new module
-in the providers/ sub-package.
+    async with ApifyClient() as client:
+        run = await client.run_actor("actor-id", {"input": "data"})
+        items = await client.get_dataset_items(run["defaultDatasetId"])
 """
+
+from app.scrapers.apify_client import ApifyClient
+
+
+__all__ = [
+    "ApifyClient",
+]
