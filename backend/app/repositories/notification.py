@@ -33,6 +33,14 @@ class NotificationRepository(BaseRepository[Notification]):
         result = await self.session.execute(stmt)
         return result.scalars().all()
 
+    async def get_unread_by_user(self, user_id: str, limit: int = 50) -> Sequence[Notification]:
+        """Get unread notifications for a user."""
+        return await self.get_by_user(user_id, unread_only=True, limit=limit)
+
+    async def get_by_user_id(self, user_id: str, limit: int = 50) -> Sequence[Notification]:
+        """Get all notifications for a user."""
+        return await self.get_by_user(user_id, unread_only=False, limit=limit)
+
     async def get_by_dedup_key(self, dedup_key: str) -> Notification | None:
         """Check if a notification with this dedup key already exists."""
         return await self.get_by_field("dedup_key", dedup_key)
@@ -58,7 +66,3 @@ class NotificationRepository(BaseRepository[Notification]):
         )
         result = await self.session.execute(stmt)
         return result.scalars().all()
-
-    async def count_unread(self, user_id: str) -> int:
-        """Count unread notifications for a user."""
-        return await self.count(filters={"user_id": user_id, "is_read": False})
