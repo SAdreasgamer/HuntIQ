@@ -5,9 +5,9 @@ Abstracts LLM providers (OpenRouter, Ollama, Mock) behind a common interface
 and provides a resilient fallback chain with structured JSON parsing.
 
 Usage:
-    from app.llm import LLMFallbackChain, LLMRequest, AIJobMatchExplanation
+    from app.llm import LLMFallbackChain, OpenRouterLLMProvider, MockLLMProvider
 
-    chain = LLMFallbackChain([openrouter_provider, ollama_provider, mock_provider])
+    chain = LLMFallbackChain([OpenRouterLLMProvider(), MockLLMProvider()])
     explanation, response = await chain.generate_structured(request, AIJobMatchExplanation)
 """
 
@@ -22,6 +22,7 @@ from app.llm.prompts import (
     build_match_explanation_prompt,
     build_recruiter_message_prompt,
 )
+from app.llm.providers.openrouter import OpenRouterLLMProvider
 from app.llm.schemas import (
     AIJobMatchExplanation,
     LLMRequest,
@@ -30,10 +31,11 @@ from app.llm.schemas import (
 )
 
 __all__ = [
-    # Base & Chain
+    # Base & Chain & Providers
     "LLMProvider",
     "LLMFallbackChain",
     "MockLLMProvider",
+    "OpenRouterLLMProvider",
     # Schemas
     "LLMTaskType",
     "LLMRequest",
