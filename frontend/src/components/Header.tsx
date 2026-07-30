@@ -1,5 +1,5 @@
 import React from 'react'
-import { Sparkles, Download, Bell, Play, Briefcase, BarChart3, Layers, FileUp } from 'lucide-react'
+import { Download, Play, Briefcase, BarChart3, Layers, FileUp, ShieldCheck } from 'lucide-react'
 
 interface HeaderProps {
   activeTab: 'feed' | 'kanban' | 'analytics'
@@ -21,91 +21,89 @@ export const Header: React.FC<HeaderProps> = ({
   }
 
   return (
-    <header className="sticky top-0 z-40 glass-card border-b border-slate-800/80 px-6 py-4">
+    <header className="bg-slate-900 border-b border-slate-800 px-6 py-3.5 sticky top-0 z-40">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-        {/* Brand Logo */}
+        {/* Clean Professional Brand */}
         <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-cyan-400 flex items-center justify-center shadow-lg shadow-indigo-500/30">
-            <Sparkles className="h-5 w-5 text-white animate-pulse" />
+          <div className="h-9 w-9 rounded-lg bg-blue-600 flex items-center justify-center text-white shadow-sm font-bold text-lg">
+            H
           </div>
           <div>
-            <h1 className="text-xl font-bold bg-gradient-to-r from-white via-slate-100 to-indigo-300 bg-clip-text text-transparent">
-              HuntIQ <span className="text-xs px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-400 border border-indigo-500/30">PRO</span>
-            </h1>
-            <p className="text-xs text-slate-400">Autonomous AI Job Search Engine</p>
+            <div className="flex items-center gap-2">
+              <h1 className="text-lg font-bold text-slate-100 tracking-tight">HuntIQ</h1>
+              <span className="text-[10px] font-semibold tracking-wide uppercase px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">
+                Enterprise
+              </span>
+            </div>
+            <p className="text-xs text-slate-400">Autonomous Career Intelligence Platform</p>
           </div>
         </div>
 
-        {/* Navigation Tabs */}
-        <nav className="flex items-center gap-1 bg-slate-900/80 p-1 rounded-xl border border-slate-800">
+        {/* Minimal Navigation Tabs */}
+        <nav className="flex items-center gap-1 bg-slate-950 p-1 rounded-lg border border-slate-800">
           <button
             onClick={() => setActiveTab('feed')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-md text-xs font-semibold transition-colors ${
               activeTab === 'feed'
-                ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+                ? 'bg-blue-600 text-white'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
             }`}
           >
-            <Briefcase className="h-4 w-4" />
+            <Briefcase className="h-3.5 w-3.5" />
             AI Match Feed
           </button>
 
           <button
             onClick={() => setActiveTab('kanban')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-md text-xs font-semibold transition-colors ${
               activeTab === 'kanban'
-                ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+                ? 'bg-blue-600 text-white'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
             }`}
           >
-            <Layers className="h-4 w-4" />
-            Application Kanban
+            <Layers className="h-3.5 w-3.5" />
+            Applications
           </button>
 
           <button
             onClick={() => setActiveTab('analytics')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-md text-xs font-semibold transition-colors ${
               activeTab === 'analytics'
-                ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+                ? 'bg-blue-600 text-white'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
             }`}
           >
-            <BarChart3 className="h-4 w-4" />
-            Analytics & Reports
+            <BarChart3 className="h-3.5 w-3.5" />
+            Analytics
           </button>
         </nav>
 
         {/* Action Controls */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
           <button
             onClick={onOpenUploadResume}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-600/20 text-indigo-300 border border-indigo-500/40 text-sm font-semibold hover:bg-indigo-600 hover:text-white transition-all shadow-sm"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs font-semibold transition-colors"
           >
-            <FileUp className="h-4 w-4" />
+            <FileUp className="h-3.5 w-3.5 text-blue-400" />
             Upload Resume
           </button>
 
           <button
             onClick={onTriggerScrape}
             disabled={isScraping}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-500 text-white text-sm font-semibold shadow-lg shadow-emerald-600/20 hover:from-emerald-500 hover:to-teal-400 transition-all disabled:opacity-50"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold transition-colors disabled:opacity-50"
           >
-            <Play className={`h-4 w-4 ${isScraping ? 'animate-spin' : ''}`} />
+            <Play className={`h-3.5 w-3.5 ${isScraping ? 'animate-spin' : ''}`} />
             {isScraping ? 'Scraping...' : 'Run Scrapers'}
           </button>
 
           <button
             onClick={handleExportExcel}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900 border border-slate-700 text-slate-200 text-sm font-semibold hover:border-slate-500 hover:bg-slate-800 transition-all shadow-sm"
-            title="Download Multi-Sheet Excel Workbook"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs font-semibold transition-colors"
+            title="Download Excel Report"
           >
-            <Download className="h-4 w-4 text-emerald-400" />
-            Excel Report
-          </button>
-
-          <button className="relative p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-white transition-all">
-            <Bell className="h-4 w-4" />
-            <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-indigo-500 animate-ping"></span>
+            <Download className="h-3.5 w-3.5 text-emerald-400" />
+            Export Excel
           </button>
         </div>
       </div>

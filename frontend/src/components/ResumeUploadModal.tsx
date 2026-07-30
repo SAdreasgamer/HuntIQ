@@ -63,43 +63,43 @@ export const ResumeUploadModal: React.FC<ResumeUploadModalProps> = ({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in">
-      <div className="glass-card max-w-lg w-full rounded-2xl border border-slate-700 overflow-hidden shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
+      <div className="pro-card max-w-md w-full overflow-hidden shadow-xl border border-slate-700">
         {/* Header */}
-        <div className="flex items-center justify-between p-5 border-b border-slate-800 bg-slate-900/60">
-          <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-indigo-500/20 text-indigo-400 border border-indigo-500/30">
-              <FileText className="h-5 w-5" />
+        <div className="flex items-center justify-between p-4 border-b border-slate-800 bg-slate-900">
+          <div className="flex items-center gap-2.5">
+            <div className="p-2 rounded bg-slate-800 text-blue-400 border border-slate-700">
+              <FileText className="h-4 w-4" />
             </div>
             <div>
-              <h3 className="text-lg font-bold text-white">Upload Candidate Resume</h3>
-              <p className="text-xs text-slate-400">PDF resume parsing & vector embedding</p>
+              <h3 className="text-base font-bold text-slate-100">Upload Candidate Resume</h3>
+              <p className="text-[11px] text-slate-400">PDF resume parsing & vector embedding</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-all"
+            className="p-1 rounded text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-colors"
           >
-            <X className="h-5 w-5" />
+            <X className="h-4 w-4" />
           </button>
         </div>
 
         {/* Content */}
-        <div className="p-6 space-y-4">
+        <div className="p-5 space-y-4">
           {!result ? (
             <>
               {/* Dropzone Area */}
-              <label className="flex flex-col items-center justify-center p-8 border-2 border-dashed border-slate-700 hover:border-indigo-500 rounded-2xl cursor-pointer bg-slate-900/40 hover:bg-slate-900/80 transition-all group">
-                <UploadCloud className="h-10 w-10 text-slate-400 group-hover:text-indigo-400 transition-colors mb-3" />
-                <span className="text-sm font-semibold text-slate-200">
+              <label className="flex flex-col items-center justify-center p-6 border border-dashed border-slate-700 hover:border-blue-500 rounded-lg cursor-pointer bg-slate-900/60 hover:bg-slate-900 transition-colors">
+                <UploadCloud className="h-8 w-8 text-slate-400 mb-2" />
+                <span className="text-xs font-semibold text-slate-200">
                   {file ? file.name : 'Click to upload or drag & drop PDF'}
                 </span>
-                <span className="text-xs text-slate-500 mt-1">PDF format (Max 10MB)</span>
+                <span className="text-[11px] text-slate-500 mt-1">PDF format (Max 10MB)</span>
                 <input type="file" accept=".pdf" onChange={handleFileChange} className="hidden" />
               </label>
 
               {error && (
-                <div className="flex items-center gap-2 p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs">
+                <div className="flex items-center gap-2 p-2.5 rounded bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs">
                   <AlertCircle className="h-4 w-4 shrink-0" />
                   {error}
                 </div>
@@ -108,12 +108,12 @@ export const ResumeUploadModal: React.FC<ResumeUploadModalProps> = ({
               <button
                 onClick={handleUpload}
                 disabled={!file || uploading}
-                className="w-full py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-cyan-500 text-white font-semibold text-sm shadow-lg shadow-indigo-600/30 hover:from-indigo-500 hover:to-cyan-400 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                className="w-full py-2 rounded bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
               >
                 {uploading ? (
                   <>
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    Parsing & Embedding Resume...
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                    Parsing & Embedding...
                   </>
                 ) : (
                   'Upload & Set Primary Resume'
@@ -121,17 +121,17 @@ export const ResumeUploadModal: React.FC<ResumeUploadModalProps> = ({
               </button>
             </>
           ) : (
-            <div className="text-center py-6 space-y-4">
-              <CheckCircle2 className="h-12 w-12 text-emerald-400 mx-auto" />
+            <div className="text-center py-5 space-y-3">
+              <CheckCircle2 className="h-10 w-10 text-emerald-400 mx-auto" />
               <div>
-                <h4 className="text-lg font-bold text-white">Resume Successfully Uploaded!</h4>
+                <h4 className="text-base font-bold text-slate-100">Resume Uploaded Successfully</h4>
                 <p className="text-xs text-slate-400 mt-1">
-                  Extracted <span className="text-indigo-400 font-semibold">{result.skills_found?.length || 0} skills</span> and built 384-dim dense vector embedding.
+                  Parsed <span className="text-blue-400 font-semibold">{result.skills_found?.length || 0} skills</span> & updated 384-dim embedding.
                 </p>
               </div>
               <button
                 onClick={onClose}
-                className="px-6 py-2.5 rounded-xl bg-indigo-600 text-white font-semibold text-sm shadow-md shadow-indigo-600/30 hover:bg-indigo-500 transition-all"
+                className="px-5 py-1.5 rounded bg-blue-600 text-white font-semibold text-xs hover:bg-blue-500 transition-colors"
               >
                 Done
               </button>
