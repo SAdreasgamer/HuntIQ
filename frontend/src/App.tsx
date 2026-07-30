@@ -5,6 +5,7 @@ import { JobFeed } from './components/JobFeed'
 import { KanbanBoard } from './components/KanbanBoard'
 import { AnalyticsCharts } from './components/AnalyticsCharts'
 import { AIInspectorModal } from './components/AIInspectorModal'
+import { ResumeUploadModal } from './components/ResumeUploadModal'
 import {
   Job,
   DashboardData,
@@ -23,6 +24,7 @@ export const App: React.FC = () => {
   const [applications, setApplications] = useState<ApplicationItem[]>([])
   const [selectedJob, setSelectedJob] = useState<Job | null>(null)
   const [isScraping, setIsScraping] = useState<boolean>(false)
+  const [isUploadOpen, setIsUploadOpen] = useState<boolean>(false)
 
   const loadData = async () => {
     try {
@@ -71,6 +73,7 @@ export const App: React.FC = () => {
         setActiveTab={setActiveTab}
         onTriggerScrape={handleTriggerScrape}
         isScraping={isScraping}
+        onOpenUploadResume={() => setIsUploadOpen(true)}
       />
 
       {/* Main Content Area */}
@@ -124,6 +127,15 @@ export const App: React.FC = () => {
 
       {/* AI Inspector Modal */}
       <AIInspectorModal job={selectedJob} onClose={() => setSelectedJob(null)} />
+
+      {/* Resume Upload Modal */}
+      <ResumeUploadModal
+        isOpen={isUploadOpen}
+        onClose={() => setIsUploadOpen(false)}
+        onSuccess={() => {
+          loadData()
+        }}
+      />
     </div>
   )
 }

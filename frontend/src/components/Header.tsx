@@ -1,11 +1,12 @@
 import React from 'react'
-import { Sparkles, Download, Bell, Play, Briefcase, BarChart3, Layers, FileText } from 'lucide-react'
+import { Sparkles, Download, Bell, Play, Briefcase, BarChart3, Layers, FileUp } from 'lucide-react'
 
 interface HeaderProps {
   activeTab: 'feed' | 'kanban' | 'analytics'
   setActiveTab: (tab: 'feed' | 'kanban' | 'analytics') => void
   onTriggerScrape: () => void
   isScraping: boolean
+  onOpenUploadResume: () => void
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -13,6 +14,7 @@ export const Header: React.FC<HeaderProps> = ({
   setActiveTab,
   onTriggerScrape,
   isScraping,
+  onOpenUploadResume,
 }) => {
   const handleExportExcel = () => {
     window.open('/api/v1/reports/excel', '_blank')
@@ -75,6 +77,14 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Action Controls */}
         <div className="flex items-center gap-3">
+          <button
+            onClick={onOpenUploadResume}
+            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-600/20 text-indigo-300 border border-indigo-500/40 text-sm font-semibold hover:bg-indigo-600 hover:text-white transition-all shadow-sm"
+          >
+            <FileUp className="h-4 w-4" />
+            Upload Resume
+          </button>
+
           <button
             onClick={onTriggerScrape}
             disabled={isScraping}
