@@ -1,0 +1,32 @@
+# ============================================================
+# HuntIQ — Development Dependencies
+# ============================================================
+# Install: pip install -r requirements/dev.txt
+# ============================================================
+
+-r base.txt
+
+# Testing
+pytest>=8.3.0
+pytest-asyncio>=0.24.0
+pytest-cov>=6.0.0
+pytest-mock>=3.14.0
+factory-boy>=3.3.0
+faker>=33.0.0
+
+# Code Quality
+black>=24.10.0
+ruff>=0.8.0
+mypy>=1.13.0
+pre-commit>=4.0.0
+
+# Type Stubs
+types-redis>=4.6.0
+types-passlib>=1.7.7
+types-python-jose>=3.3.0
+pandas-stubs>=2.2.0
+sqlalchemy-stubs>=0.4
+
+# Debug
+ipython>=8.29.0
+rich>=13.9.0

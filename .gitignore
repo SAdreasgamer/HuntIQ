@@ -1,0 +1,87 @@
+# ============================================================
+# HuntIQ — .gitignore
+# ============================================================
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+*.egg
+dist/
+build/
+eggs/
+*.whl
+
+# Virtual Environment
+.venv/
+venv/
+env/
+ENV/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+
+# Environment & Secrets
+.env
+.env.*
+!.env.example
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Redis
+dump.rdb
+
+# Test & Coverage
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+.pytest_cache/
+.mypy_cache/
+
+# Reports (generated)
+reports/*.xlsx
+reports/*.csv
+
+# Logs
+*.log
+logs/
+
+# Docker
+docker-compose.override.yml
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# Uploads
+uploads/
+resumes/
+
+# Embeddings cache
+.embeddings_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Distribution
+*.tar.gz
+*.zip

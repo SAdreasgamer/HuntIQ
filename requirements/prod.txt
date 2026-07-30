@@ -1,0 +1,10 @@
+# ============================================================
+# HuntIQ — Production Dependencies
+# ============================================================
+# Install: pip install -r requirements/prod.txt
+# ============================================================
+
+-r base.txt
+
+# Production ASGI Server
+gunicorn>=23.0.0
