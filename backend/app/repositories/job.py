@@ -94,7 +94,11 @@ class JobRepository(BaseRepository[Job]):
         if company_id:
             stmt = stmt.where(Job.company_id == company_id)
 
-        stmt = stmt.order_by(Job.match_score.desc().nulls_last()).limit(limit).offset(offset)
+        stmt = stmt.options(
+            selectinload(Job.company),
+            selectinload(Job.sources),
+            selectinload(Job.skills),
+        ).order_by(Job.match_score.desc().nulls_last()).limit(limit).offset(offset)
         result = await self.session.execute(stmt)
         return result.scalars().all()
 
