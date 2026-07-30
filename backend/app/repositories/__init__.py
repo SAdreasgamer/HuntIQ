@@ -1,15 +1,78 @@
 """
 Repository layer — data access abstraction.
 
-This package contains repository classes that encapsulate
-all database operations. Repositories provide a clean
-interface between the service layer and the database.
+All database operations go through repositories.
+Business logic in services should NEVER construct raw
+SQLAlchemy queries — always use repository methods.
 
-Each repository:
-- Accepts an async SQLAlchemy session
-- Provides CRUD operations for its domain
-- Returns ORM model instances
-- Never contains business logic
+Usage:
+    from app.repositories import JobRepository
 
-Pattern: Repository per aggregate root.
+    async def get_top_jobs(session: AsyncSession):
+        repo = JobRepository(session)
+        return await repo.get_top_matches(limit=10)
 """
+
+from app.repositories.analytics import AnalyticsSnapshotRepository
+from app.repositories.application import (
+    ApplicationRepository,
+    ApplicationStageHistoryRepository,
+)
+from app.repositories.base import BaseRepository
+from app.repositories.bookmark import BookmarkRepository, BookmarkTagRepository
+from app.repositories.company import CompanyRepository
+from app.repositories.job import (
+    JobEmbeddingRepository,
+    JobRepository,
+    JobSkillRepository,
+    JobSourceRepository,
+)
+from app.repositories.llm_cache import LLMCacheRepository
+from app.repositories.notification import NotificationRepository
+from app.repositories.recruiter import RecruiterRepository
+from app.repositories.report import ReportRepository
+from app.repositories.resume import (
+    ResumeEmbeddingRepository,
+    ResumeSkillRepository,
+    ResumeVersionRepository,
+)
+from app.repositories.search import SearchCheckpointRepository
+from app.repositories.user import UserPreferenceRepository, UserRepository
+
+
+__all__ = [
+    # Base
+    "BaseRepository",
+    # User
+    "UserRepository",
+    "UserPreferenceRepository",
+    # Company
+    "CompanyRepository",
+    # Job
+    "JobRepository",
+    "JobSkillRepository",
+    "JobSourceRepository",
+    "JobEmbeddingRepository",
+    # Resume
+    "ResumeVersionRepository",
+    "ResumeSkillRepository",
+    "ResumeEmbeddingRepository",
+    # Application
+    "ApplicationRepository",
+    "ApplicationStageHistoryRepository",
+    # Bookmark
+    "BookmarkRepository",
+    "BookmarkTagRepository",
+    # Recruiter
+    "RecruiterRepository",
+    # Notification
+    "NotificationRepository",
+    # Report
+    "ReportRepository",
+    # Analytics
+    "AnalyticsSnapshotRepository",
+    # LLM Cache
+    "LLMCacheRepository",
+    # Search
+    "SearchCheckpointRepository",
+]
