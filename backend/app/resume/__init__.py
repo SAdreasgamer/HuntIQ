@@ -5,12 +5,14 @@ Parses PDF resumes into structured JSON models, manages versioning,
 stores files, and computes resume vector embeddings for matching.
 
 Usage:
-    from app.resume import ResumeParser, ResumeStorageService
+    from app.resume import ResumeParser, ResumeStorageService, ResumeEmbeddingService
 
     parser = ResumeParser()
     storage = ResumeStorageService()
+    embedder = ResumeEmbeddingService()
 """
 
+from app.resume.embeddings import ResumeEmbeddingService
 from app.resume.parser import ResumeParser
 from app.resume.schemas import (
     Certification,
@@ -33,4 +35,5 @@ __all__ = [
     "Certification",
     "SkillCategory",
     "ResumeStorageService",
+    "ResumeEmbeddingService",
 ]
