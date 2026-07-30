@@ -1,19 +1,24 @@
 """
-LLMCache repository.
+HuntIQ — LLM Cache Repository.
+
+Data access layer for LLMCache ORM model.
+Supports cache lookup by (content_hash, task_type, resume_version_id),
+storing cache hits with TTL, and cleanup of expired entries.
 """
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
+from typing import Any
 
-from sqlalchemy import and_, delete, select
+from sqlalchemy import and_, select
 
 from app.models.llm_cache import LLMCache
 from app.repositories.base import BaseRepository
 
 
 class LLMCacheRepository(BaseRepository[LLMCache]):
-    """Repository for LLMCache model operations."""
+    """Repository managing cached LLM completions."""
 
     model = LLMCache
 
@@ -24,12 +29,12 @@ class LLMCacheRepository(BaseRepository[LLMCache]):
         resume_version_id: str | None = None,
     ) -> LLMCache | None:
         """
-        Look up a cached LLM response.
+        Retrieve a non-expired cached LLM response.
 
         Args:
-            content_hash: SHA-256 hash of the job/content.
-            task_type: LLM task type identifier.
-            resume_version_id: Resume version ID (None for resume-independent tasks).
+            content_hash: SHA-256 content hash.
+            task_type: LLM task type name.
+            resume_version_id: Optional resume version ID.
 
         Returns:
             The cached entry if found and not expired, None otherwise.
@@ -50,10 +55,14 @@ class LLMCacheRepository(BaseRepository[LLMCache]):
         if entry is None:
             return None
 
-        # Check expiration
-        if entry.expires_at and entry.expires_at < datetime.now(timezone.utc):
-            await self.delete(entry.id)
-            return None
+        # Check expiration (safely handling naive/aware datetimes)
+        if entry.expires_at:
+            exp_at = entry.expires_at
+            if exp_at.tzinfo is None:
+                exp_at = exp_at.replace(tzinfo=timezone.utc)
+            if exp_at < datetime.now(timezone.utc):
+                await self.delete(entry.id)
+                return None
 
         return entry
 
@@ -74,34 +83,28 @@ class LLMCacheRepository(BaseRepository[LLMCache]):
         ttl_seconds: int = 604800,
     ) -> LLMCache:
         """
-        Store an LLM response in the cache.
+        Store a new LLM completion response in the cache.
 
         Args:
-            content_hash: SHA-256 hash of the content.
-            task_type: LLM task type.
-            resume_version_id: Resume version ID.
-            provider: LLM provider used.
-            model: LLM model used.
-            prompt_hash: Hash of the prompt.
-            response_text: Raw response text.
-            response_structured: Parsed response data.
-            prompt_tokens: Prompt token count.
-            completion_tokens: Completion token count.
+            content_hash: SHA-256 hash of prompt/content.
+            task_type: Task category identifier.
+            resume_version_id: FK to ResumeVersion if applicable.
+            provider: LLM provider name.
+            model: Model identifier.
+            prompt_hash: SHA-256 hash of the full prompt string.
+            response_text: Raw LLM text completion.
+            response_structured: Parsed JSON dictionary if applicable.
+            prompt_tokens: Token count for prompt.
+            completion_tokens: Token count for completion.
             total_tokens: Total token count.
-            latency_ms: Response latency.
-            ttl_seconds: Cache TTL (default 7 days).
+            latency_ms: Request latency in ms.
+            ttl_seconds: Cache TTL in seconds (default: 7 days).
 
         Returns:
-            The created cache entry.
+            The created LLMCache entry.
         """
-        from datetime import timedelta
-
-        expires_at = datetime.now(timezone.utc) + timedelta(seconds=ttl_seconds)
-
-        # Delete existing entry if any (upsert)
-        existing = await self.get_cached(content_hash, task_type, resume_version_id)
-        if existing:
-            await self.delete(existing.id)
+        now = datetime.now(timezone.utc)
+        expires_at = now + timedelta(seconds=ttl_seconds)
 
         return await self.create(
             content_hash=content_hash,
@@ -116,21 +119,24 @@ class LLMCacheRepository(BaseRepository[LLMCache]):
             completion_tokens=completion_tokens,
             total_tokens=total_tokens,
             latency_ms=latency_ms,
+            created_at=now,
             expires_at=expires_at,
         )
 
-    async def clear_expired(self) -> int:
-        """Delete all expired cache entries."""
-        now = datetime.now(timezone.utc)
-        stmt = delete(LLMCache).where(
-            LLMCache.expires_at.isnot(None),
-            LLMCache.expires_at < now,
-        )
-        result = await self.session.execute(stmt)
-        return result.rowcount  # type: ignore[return-value]
+    async def purge_expired(self) -> int:
+        """
+        Delete all expired cache entries.
 
-    async def clear_by_task_type(self, task_type: str) -> int:
-        """Clear all cache entries for a specific task type."""
-        stmt = delete(LLMCache).where(LLMCache.task_type == task_type)
+        Returns:
+            Count of deleted records.
+        """
+        now = datetime.now(timezone.utc)
+        stmt = select(LLMCache).where(LLMCache.expires_at < now)
         result = await self.session.execute(stmt)
-        return result.rowcount  # type: ignore[return-value]
+        expired_entries = list(result.scalars().all())
+
+        for entry in expired_entries:
+            await self.session.delete(entry)
+
+        await self.session.flush()
+        return len(expired_entries)
