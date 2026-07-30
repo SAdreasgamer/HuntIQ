@@ -1,15 +1,12 @@
 """
-Job provider implementations.
+Job source provider implementations.
 
-Each module in this package implements the JobProvider
-interface for a specific job board or career page:
-
-- linkedin: LinkedIn Jobs via Apify
-- greenhouse: Greenhouse ATS boards
-- lever: Lever ATS boards
-- ashby: Ashby ATS boards
-- indeed: Indeed job listings via Apify
-- wellfound: Wellfound (AngelList) startups
-- naukri: Naukri job listings via Apify
-- company_careers: Direct company career page scraping
+All provider modules defined in this package self-register
+via the @register_provider decorator upon import.
 """
+
+from app.scrapers.providers.linkedin import LinkedInProvider
+
+__all__ = [
+    "LinkedInProvider",
+]
