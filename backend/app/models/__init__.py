@@ -1,27 +1,60 @@
 """
 SQLAlchemy ORM models.
 
-This package contains all SQLAlchemy declarative models
-representing the database schema:
+This module imports all models to ensure they are registered
+with the Base metadata. This is required for Alembic
+autogenerate to detect all tables.
 
-- User: Authentication and identity
-- Company: Company intelligence
-- Job: Normalized job listings
-- JobSkill: Skills extracted from jobs
-- JobSource: Provider tracking per job
-- JobEmbedding: Vector embeddings for jobs
-- ResumeVersion: Resume variants
-- ResumeSkill: Skills extracted from resumes
-- ResumeEmbedding: Vector embeddings for resumes
-- Application: Application tracking
-- ApplicationStage: Stage transition history
-- Bookmark: Saved jobs
-- BookmarkTag: Tag associations
-- Recruiter: Recruiter contacts
-- Notification: Notification history
-- Report: Generated report metadata
-- AnalyticsSnapshot: Aggregated metrics
-- UserPreference: User configuration
-- LLMCache: Cached LLM responses
-- SearchCheckpoint: Interrupted search state
+Usage:
+    from app.models import User, Job, Company, Application, ...
 """
+
+# Import all models so they register with Base.metadata
+from app.models.analytics import AnalyticsSnapshot
+from app.models.application import Application, ApplicationStageHistory
+from app.models.bookmark import Bookmark, BookmarkTag
+from app.models.company import Company
+from app.models.job import Job, JobEmbedding, JobSkill, JobSource
+from app.models.llm_cache import LLMCache
+from app.models.notification import Notification
+from app.models.recruiter import Recruiter
+from app.models.report import Report
+from app.models.resume import ResumeEmbedding, ResumeSkill, ResumeVersion
+from app.models.search import SearchCheckpoint
+from app.models.user import User, UserPreference
+
+
+__all__ = [
+    # User
+    "User",
+    "UserPreference",
+    # Company
+    "Company",
+    # Job
+    "Job",
+    "JobSkill",
+    "JobSource",
+    "JobEmbedding",
+    # Resume
+    "ResumeVersion",
+    "ResumeSkill",
+    "ResumeEmbedding",
+    # Application
+    "Application",
+    "ApplicationStageHistory",
+    # Bookmark
+    "Bookmark",
+    "BookmarkTag",
+    # Recruiter
+    "Recruiter",
+    # Notification
+    "Notification",
+    # Report
+    "Report",
+    # Analytics
+    "AnalyticsSnapshot",
+    # LLM Cache
+    "LLMCache",
+    # Search
+    "SearchCheckpoint",
+]
