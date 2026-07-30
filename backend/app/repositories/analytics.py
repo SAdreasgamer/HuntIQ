@@ -5,7 +5,7 @@ AnalyticsSnapshot repository.
 from __future__ import annotations
 
 from collections.abc import Sequence
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import select
 
@@ -18,7 +18,27 @@ class AnalyticsSnapshotRepository(BaseRepository[AnalyticsSnapshot]):
 
     model = AnalyticsSnapshot
 
-    async def get_latest(self, snapshot_type: str) -> AnalyticsSnapshot | None:
+    async def get_by_date(self, snapshot_date: datetime, snapshot_type: str = "daily") -> AnalyticsSnapshot | None:
+        """Get snapshot for a specific date and type."""
+        stmt = select(AnalyticsSnapshot).where(
+            AnalyticsSnapshot.snapshot_type == snapshot_type,
+            AnalyticsSnapshot.snapshot_date == snapshot_date,
+        )
+        result = await self.session.execute(stmt)
+        return result.scalars().first()
+
+    async def get_user_history(self, limit: int = 30, snapshot_type: str = "daily") -> Sequence[AnalyticsSnapshot]:
+        """Get the most recent N snapshots."""
+        stmt = (
+            select(AnalyticsSnapshot)
+            .where(AnalyticsSnapshot.snapshot_type == snapshot_type)
+            .order_by(AnalyticsSnapshot.snapshot_date.desc())
+            .limit(limit)
+        )
+        result = await self.session.execute(stmt)
+        return result.scalars().all()
+
+    async def get_latest(self, snapshot_type: str = "daily") -> AnalyticsSnapshot | None:
         """Get the most recent snapshot of a given type."""
         stmt = (
             select(AnalyticsSnapshot)
@@ -47,19 +67,3 @@ class AnalyticsSnapshotRepository(BaseRepository[AnalyticsSnapshot]):
         )
         result = await self.session.execute(stmt)
         return result.scalars().all()
-
-    async def get_trend(
-        self,
-        snapshot_type: str,
-        limit: int = 30,
-    ) -> Sequence[AnalyticsSnapshot]:
-        """Get the most recent N snapshots for trend analysis."""
-        stmt = (
-            select(AnalyticsSnapshot)
-            .where(AnalyticsSnapshot.snapshot_type == snapshot_type)
-            .order_by(AnalyticsSnapshot.snapshot_date.desc())
-            .limit(limit)
-        )
-        result = await self.session.execute(stmt)
-        # Return in chronological order
-        return list(reversed(result.scalars().all()))
