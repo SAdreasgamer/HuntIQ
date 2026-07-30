@@ -116,6 +116,10 @@ class WeightsValidationError(MatchingError):
     """Raised when rule matcher weights do not sum to 1.0."""
 
 
+class EmbeddingError(MatchingError):
+    """Raised when vector embedding generation fails."""
+
+
 # ============================================================
 # Resume Errors
 # ============================================================
